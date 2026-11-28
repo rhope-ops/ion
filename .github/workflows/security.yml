@@ -29,7 +29,7 @@ jobs:
       - name: Install hash-pinned bandit
         run: pip install --require-hashes -r requirements.txt && pip check
       - name: Kit package (package mode only; else it prints "not used"), so bandit also scans the package scripts
-        run: scripts/check.sh --kit-install
+        run: if [ -f .check.lock ]; then bash scripts/check.sh --kit-install; fi
       - name: Scan scripts (medium severity and higher)
         run: bandit -r scripts/ -ll
   gitleaks:
