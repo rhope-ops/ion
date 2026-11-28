@@ -1,0 +1,41 @@
+name: release
+# Automated Ion Release: runs scripts/check.sh + nipr_guard.py and creates GitHub Release + tag.
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g. v1.0.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: Install linters
+        run: pip install ruff==0.17.6 pylint==4.1.4 shellcheck-py==0.9.0.6
+      - name: Run full checks
+        run: bash scripts/check.sh && python3 scripts/nipr_guard.py
+      - name: Create GitHub Release and tag
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$INPUT_TAG" -m "Release $INPUT_TAG"
+          git push origin "$INPUT_TAG"
+          gh release create "$INPUT_TAG" --title "Ion $INPUT_TAG" --generate-notes

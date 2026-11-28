@@ -1,4 +1,4 @@
-![Ion: ion · Privacy Act Management](docs/assets/33-332.Z-social-preview.png)
+![Ion: ion · Privacy Act Management](docs/assets/ion-social-preview.png)
 
 # Ion
 Privacy Act Management: small, read-only tools that help a DAF unit find and protect PII in Microsoft 365 (AFI 33-332).
