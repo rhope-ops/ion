@@ -54,8 +54,5 @@
   "scripts/worker_guard_scan_samples.json": "e02611098cc418a948c961be5fa2e6728db648e7897f21121a664b84f348c535"
  },
  "kit": "archimedes_lever",
- "overrides": [
-  ".github/workflows/check.yml"
- ],
  "version": "16.0.1"
 }
